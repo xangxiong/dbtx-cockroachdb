@@ -143,6 +143,12 @@ class CockroachdbConnectionManager(SQLConnectionManager):
                 connect_timeout=credentials.connect_timeout,
                 **kwargs,
             )
+            # We wil disable autocommit, which also means that a transaction is 
+            # started at the first command execution.
+            # Reference:
+            #   - https://www.psycopg.org/docs/connection.html#connection.autocommit
+            handle.set_session(autocommit=False)
+
             if credentials.role:
                 handle.cursor().execute("set role {}".format(credentials.role))
             return handle
@@ -208,3 +214,22 @@ class CockroachdbConnectionManager(SQLConnectionManager):
             return string_types[type_code].name
         else:
             return f"unknown type_code {type_code}"
+
+    def begin(self):
+        connection = self.get_thread_connection()
+        if connection.transaction_open is True:
+            raise dbt.exceptions.DbtInternalError(
+                'Tried to begin a new transaction on connection "{}", but '
+                "it already had one open!".format(connection.name)
+            )
+
+        # NOTE: We don't need to specifically call begin as a transaction will be auto started for us.
+        #       This is to work around the issue where CockroachDB is seeing an active transaction already.
+        # Reference:
+        #   - https://github.com/cockroachdb/cockroach/issues/41513
+        #   - https://github.com/cockroachdb/cockroach/issues/54954
+
+        # self.add_begin_query()
+
+        connection.transaction_open = True
+        return connection
