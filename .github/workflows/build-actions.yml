@@ -14,9 +14,5 @@ jobs:
         with:
           python-version: '3.8'
       - run: pip install twine
-      # - name: bump version and create tag
-      #   id: tag_version
-      #   uses: mathieudutour/github-tag-action@v6.1
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      
+      - run: python setup.py sdist
+      - run: twine upload dist/*

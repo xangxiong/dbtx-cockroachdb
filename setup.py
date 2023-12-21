@@ -39,9 +39,9 @@ def _dbt_psycopg2_name():
     print(PSYCOPG2_MESSAGE)
     return "psycopg2-binary"
 
+from dbt.adapters.cockroachdb.__version__ import version as package_version
 
 package_name = "dbtx-cockroachdb"
-package_version = "1.7.4"
 description = """The cockroachdb adapter plugin for dbt (data build tool)"""
 
 this_directory = os.path.abspath(os.path.dirname(__file__))
@@ -62,7 +62,7 @@ setup(
     packages=find_namespace_packages(include=["dbt", "dbt.*"]),
     include_package_data=True,
     install_requires=[
-        "dbt-core=={}".format(package_version),
+        "dbt-core~=1.7.0",
         "{}~=2.9".format(DBT_PSYCOPG2_NAME),
         # installed via dbt-core, but referenced directly, don't pin to avoid version conflicts with dbt-core
         "agate",
