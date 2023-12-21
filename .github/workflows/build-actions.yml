@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - 1.7.0-dev
 jobs:
   build:
     runs-on: ubuntu-20.04
