@@ -39,8 +39,8 @@ def _dbt_psycopg2_name():
     print(PSYCOPG2_MESSAGE)
     return "psycopg2-binary"
 
-from __version__ import version as package_version
 package_name = "dbtx-cockroachdb"
+package_version = "1.7.4"
 description = """The cockroachdb adapter plugin for dbt (data build tool)"""
 
 this_directory = os.path.abspath(os.path.dirname(__file__))
