@@ -40,8 +40,9 @@ def _dbt_psycopg2_name():
     return "psycopg2-binary"
 
 package_name = "dbtx-cockroachdb"
-# add build increment to allow us to push new release on the same version
-package_version = "1.7.4-1"
+# For test build we should suffix it with -#, like: 1.7.5-1.
+# This will generate a build version as 1.7.5.post1.
+package_version = "1.7.5"
 description = """The cockroachdb adapter plugin for dbt (data build tool)"""
 
 this_directory = os.path.abspath(os.path.dirname(__file__))
