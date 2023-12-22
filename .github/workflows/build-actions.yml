@@ -16,7 +16,7 @@ jobs:
       - run: pip install .
       - run: python setup.py sdist
       - run: twine check dist/*
-      - run: twine upload --skip-existing dist/*
+      - run: twine upload dist/*
         env:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
