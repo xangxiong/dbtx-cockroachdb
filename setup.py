@@ -42,7 +42,8 @@ def _dbt_psycopg2_name():
 package_name = "dbtx-cockroachdb"
 # For test build we should suffix it with -#, like: 1.7.5-1.
 # This will generate a build version as 1.7.5.post1.
-package_version = "1.7.5"
+# When updating the package_version here, you must update the version in dbt.adapters.cockroachdb.__version__ as well
+package_version = "1.7.6"
 description = """The cockroachdb adapter plugin for dbt (data build tool)"""
 
 this_directory = os.path.abspath(os.path.dirname(__file__))
