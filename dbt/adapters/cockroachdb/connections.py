@@ -223,13 +223,17 @@ class CockroachdbConnectionManager(SQLConnectionManager):
                 "it already had one open!".format(connection.name)
             )
 
-        # NOTE: We don't need to specifically call begin as a transaction will be auto started for us.
-        #       This is to work around the issue where CockroachDB is seeing an active transaction already.
+        # We will attempt to close any created transaction by commiting first
+        # This is to work around the issue where CockroachDB is seeing an active transaction already.
         # Reference:
         #   - https://github.com/cockroachdb/cockroach/issues/41513
         #   - https://github.com/cockroachdb/cockroach/issues/54954
+        try:
+            self.add_commit_query()
+        except Exception:
+            pass
 
-        # self.add_begin_query()
+        self.add_begin_query()
 
         connection.transaction_open = True
         return connection
